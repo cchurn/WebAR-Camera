@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#000000">
+  <title>WebAR_Camera</title>
+</head>
+<body>
+
+<video id="webar_video" width="320" height="568" autoplay></video>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        WebARCamera.camera.init({
+            camera: 'environment',
+            domElementID: 'webar_video',
+            debug: true
+        });
+
+        WebARCamera.camera.addEventListener("camera_event", function(e) {
+            console.log('%ccamera_event: ' + e.detail, 'background: #222; color: #fff');
+            switch (e.detail) {
+                case 'PermissionDeniedError':
+
+                    break;
+                case 'PermissionGranted':
+
+                    break;
+                case 'NotSupportedError':
+
+                    break;
+            }
+        });
+    });
+</script>
+</body>
+</html>
