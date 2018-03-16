@@ -20,7 +20,7 @@ var debug = {
         if (!this.hasInit) this.init();
         var col = (typeof color == "undefined" ? 'white' : color);
         var bg = (typeof background == "undefined" ? 'none' : background);
-        document.querySelector('.debug').innerHTML +='<span style="padding:3px; line-height: 20px; color: ' + col +'; background: ' + bg +';">' + message + '</span><br/>';
+        document.querySelector('.debug').innerHTML +='<span style="padding:3px; line-height: 25px; color: ' + col +'; background: ' + bg +';">' + message + '</span><br/>';
     },
     hide: function() {
         if (!this.hasInit) return;

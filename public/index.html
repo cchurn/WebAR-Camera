@@ -9,6 +9,7 @@
 <body>
 
 <video id="webar_video" width="320" height="568" autoplay></video>
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
 
@@ -18,8 +19,16 @@
             debug: true
         });
 
+
+
         WebARCamera.camera.addEventListener("camera_event", function(e) {
             console.log('%ccamera_event: ' + e.detail, 'background: #222; color: #fff');
+            setTimeout(function() {
+                WebARCamera.camera.pause();
+            }, 2000);
+            setTimeout(function() {
+                WebARCamera.camera.resume();
+            }, 3000);
             switch (e.detail) {
                 case 'PermissionDeniedError':
 

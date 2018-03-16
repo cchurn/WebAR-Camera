@@ -1,4 +1,3 @@
-import * as $ from 'jquery'
 import {EventEmitter} from 'events';
 import debug from './debug';
 
@@ -39,15 +38,18 @@ class MediaDevice extends EventEmitter {
         var config = Object.create(this.defaults, this.options);
         console.log('', config);
 
-        if (config.debug) {
-            console.log('', debug);
-            debug.init();
-        }
-
         /**
          * Configure the supplied video element
          */
         this.addCameraStream()
+    }
+    pause() {
+        this.mediaStream.enabled = false;
+        if(this.config.debug) debug.log('Camera paused', '#ffcc00', '#000000');
+    }
+    resume() {
+        this.mediaStream.enabled = true;
+        if(this.config.debug) debug.log('Camera resumed', '#000000', '#3BFF4C');
     }
     addCameraStream() {
         var video = document.getElementById(this.config.domElementID);
@@ -64,10 +66,10 @@ class MediaDevice extends EventEmitter {
 
         navigator.mediaDevices.getUserMedia(constraints).then(function success(stream) {
             video.srcObject = stream;
-            debug.log('Camera enabled...', '#000000', '#3BFF4C');
+            if(this.config.debug) debug.log('Camera enabled...', '#000000', '#3BFF4C');
             var event = new CustomEvent('camera_event', { detail: 'PermissionGranted' });
             this.target.dispatchEvent(event);
-            var MediaStream = stream.getTracks()[0];
+            this.mediaStream = stream.getTracks()[0];
 
         }.bind(this)).catch(function (e) {
             /**
@@ -77,19 +79,19 @@ class MediaDevice extends EventEmitter {
              */
             switch (e.name) {
                 case 'PermissionDismissedError':
-                    debug.log('PermissionDismissedError', 'white', 'red');
+                    if(this.config.debug) debug.log('PermissionDismissedError', 'white', 'red');
                     console.log('user has dismissed the request for camera');
                     break;
                 case 'PermissionDeniedError':
-                    debug.log('PermissionDeniedError', 'white', 'red');
+                    if(this.config.debug) debug.log('PermissionDeniedError', 'white', 'red');
                     console.log('user has blocked camera for this domain');
                     break;
                 case 'NotAllowedError':
-                    debug.log('NotAllowedError', 'white', 'red');
+                    if(this.config.debug) debug.log('NotAllowedError', 'white', 'red');
                     console.log('user has blocked camera for this domain');
                     break;
                 case 'NotSupportedError':
-                    debug.log('NotSupportedError', 'white', 'red');
+                    if(this.config.debug) debug.log('NotSupportedError', 'white', 'red');
                     console.log('The current platform does not support webrtc');
                     break;
             }
